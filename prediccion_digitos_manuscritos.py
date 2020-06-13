@@ -8,7 +8,7 @@ import matplotlib.image as mpimg
 import seaborn as sns
 # %matplotlib inline
 
-np.random.seed(2)
+np.random.seed(30)
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -124,13 +124,10 @@ datagen.fit(X_train)
 
 # Por último lo que vamos a hacer es introducir el modelo
 
-earlystopper = EarlyStopping(monitor='val_loss', min_delta=0,
-                             patience=1, verbose=1, mode='auto')
-
 history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),
                               epochs = epochs, validation_data = (X_val,Y_val),
                               verbose = 2, steps_per_epoch=X_train.shape[0] // batch_size
-                              , callbacks=[learning_rate_reduction], earlystopper)
+                              , callbacks=[reduccion_de_tasa_de_aprendizaje])
 
 
 fig, ax = plt.subplots(2,1)
@@ -141,3 +138,7 @@ legend = ax[0].legend(loc='best', shadow=True)
 ax[1].plot(history.history['accuracy'], color='b', label="Training accuracy")
 ax[1].plot(history.history['val_accuracy'], color='r',label="Validation accuracy")
 legend = ax[1].legend(loc='best', shadow=True)
+
+
+# Ahora vamos a guardar nuestro modelo para poder usarlo con ROS
+model.save("/tmp/pdm.h5")
