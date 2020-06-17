@@ -1,5 +1,3 @@
-prediccion_digitos_manuscritos
-
-<h1>Modelo entrenado:</h1>
+<h3>Modelo entrenado:</h3>
 /pdm.h5
 
